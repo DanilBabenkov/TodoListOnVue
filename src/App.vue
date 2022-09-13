@@ -31,9 +31,9 @@ export default {
 
     const addTask = ({title, checked}) => {
       if(checked === true) {
-        taskList.value.unshift({id: taskList.value.length + 1, title, importance: 'Срочная', checked, status: false})
+        taskList.value.unshift({id: taskList.value.length + 1, title, description: [], importance: 'Срочная', checked, status: false})
       } else {
-        taskList.value = [...taskList.value, {id: taskList.value.length + 1, title, importance: 'Обычная', checked, status: false}]
+        taskList.value = [...taskList.value, {id: taskList.value.length + 1, title, description: [], importance: 'Обычная', checked, status: false}]
       }
     }
     const addDescription = (description, id) => {
