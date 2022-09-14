@@ -2,7 +2,7 @@
   <div class="task-input my-list">
     <input v-model="title" placeholder="Title" type="text">
     <div>
-      <input type="checkbox" v-model="checked" placeholder="Importance">
+      <input type="checkbox" v-model="importance" placeholder="Importance">
       <label for="checkbox">Важность</label>
     </div>
     <input @input="$emit('onInput', search)" v-model="search" placeholder="Search" type="text">
@@ -28,14 +28,13 @@ export default {
   setup(props, { emit }) {
     const title = ref('')
     const description = ref([])
-    const importance = ref('')
     const search = ref('')
-    const checked = ref(false)
+    const importance = ref(false)
 
     const onAddTask = () => {
-      emit('onAddTask', {title: title.value, description: description.value, importance: importance.value, checked: checked.value});
+      emit('onAddTask', {title: title.value, description: description.value, importance: importance.value});
       title.value = '';
-      checked.value = false;
+      importance.value = false;
     }
     const onSort = () => {
       emit('onSort')
@@ -46,7 +45,6 @@ export default {
       description,
       importance,
       search,
-      checked,
       onAddTask,
       onSort
     }

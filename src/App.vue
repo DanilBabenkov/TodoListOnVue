@@ -26,14 +26,14 @@ export default {
     }
   },
   setup() {
-    const taskList = ref([{id:0, title: 'Create Video', description: ['And upload on YT'], importance: 'Обычная', status: false}]);
+    const taskList = ref([{id:0, title: 'Create Video', description: ['And upload on YT'], status: false}]);
     let sorting = true;
 
-    const addTask = ({title, checked}) => {
-      if(checked === true) {
-        taskList.value.unshift({id: taskList.value.length + 1, title, description: [], importance: 'Срочная', checked, status: false})
+    const addTask = ({title, importance}) => {
+      if(importance === true) {
+        taskList.value.unshift({id: taskList.value.length + 1, title, description: [], importance, status: false})
       } else {
-        taskList.value = [...taskList.value, {id: taskList.value.length + 1, title, description: [], importance: 'Обычная', checked, status: false}]
+        taskList.value = [...taskList.value, {id: taskList.value.length + 1, title, description: [], importance, status: false}]
       }
     }
     const addDescription = (description, id) => {
@@ -99,7 +99,7 @@ export default {
   padding: 0;
 }
 main {
-  max-width: 450px;
+  max-width: 630px;
   margin: 0 auto;
   padding: 10px 0;
 }

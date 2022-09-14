@@ -2,34 +2,36 @@
   <div @click="changeShow" class="task-card my-style">
     <div>
       <h4>{{model.title}}</h4>
-      <div v-show="this.isShow">
-        <li v-for="(value, index) in model.description" :key="index">{{value}}</li>
+      <div v-show="this.isShow" class="description">
+        <li v-for="(value, index) in model.description" :key="index">
+          {{value}}
+          <button class="delete-item">Удалить</button>
+        </li>
       </div>
       <input v-on:keyup.enter="onAddDescription" v-model="description1" placeholder="Description" type="text">
     </div>
     <div>
-      <p>{{ this.time }}</p>
-      <span>{{ model.importance }}</span>
-      <button @click="emitOnDone" v-if="!model.status">+</button>
-      <button @click="emitOnRemove" v-else>-</button>
+      <p>{{ this.date }}</p>
+      <span v-if="model.importance">{{ 'Срочная' }}</span>
+      <span v-else>{{ 'Обычная' }}</span>
+      <button @click="emitOnDone" v-if="!model.status">В работе</button>
+      <button @click="emitOnRemove" v-else>Выполнена</button>
     </div>
   </div>
 </template>
 
 <script>
 import {ref} from "vue";
+import moment from "moment";
 
 export default {
   name: "TaskCard",
   data() {
     return {
-      checked: true,
       time: 0,
-      isShow: false
+      isShow: false,
+      date: moment().format('DD.MM HH:mm')
     }
-  },
-  mounted() {
-    this.startTimer()
   },
   props: {
     model: {
@@ -38,7 +40,6 @@ export default {
         id: 0,
         title: 'Create Video',
         description: 'And upload on YouTUbe',
-        importance: "Обычная",
         status: false
       }
     },
@@ -68,13 +69,7 @@ export default {
     }
   },
   methods: {
-    startTimer() {
-      setInterval(() => {
-        this.time++
-      }, 1000)
-    },
     changeShow() {
-      console.log( this.isShow)
       this.isShow = !this.isShow
     }
   }
@@ -88,11 +83,17 @@ button, input, .my-style {
   padding: 10px;
 }
 span {
-  padding-right: 30px;
+  margin: 20px;
 }
 .task-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.description {
+  margin-bottom: 15px;
+}
+.delete-item{
+  margin-left: 30px;
 }
 </style>
