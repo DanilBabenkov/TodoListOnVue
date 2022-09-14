@@ -1,14 +1,19 @@
 <template>
-  <div @click="changeShow" class="task-card my-style">
+  <div class="task-card my-style">
     <div>
       <h4>{{model.title}}</h4>
-      <div v-show="this.isShow" class="description">
-        <li v-for="(value, index) in model.description" :key="index">
-          {{value}}
-          <button class="delete-item">Удалить</button>
-        </li>
+      <div v-for="(value, index) in model.description" :key="index" v-show="this.isShow && !!value" class="description-list">
+        <li>{{value}}</li>
+        <button @click="deleteDescription(index, model.description)" class="delete-item">Удалить</button>
       </div>
-      <input v-on:keyup.enter="onAddDescription" v-model="description1" placeholder="Description" type="text">
+      <input v-on:keyup.enter="onAddDescription" v-model="description" placeholder="Description" type="text">
+      <button @click="onAddDescription" class="delete-item">Добавить</button>
+      <div v-if="this.isShow">
+        <button @click="changeShow" class="show-more">Скрыть список</button>
+      </div>
+      <div v-else>
+        <button @click="changeShow" class="show-more">Показать список</button>
+      </div>
     </div>
     <div>
       <p>{{ this.date }}</p>
@@ -39,17 +44,12 @@ export default {
       default: {
         id: 0,
         title: 'Create Video',
-        description: 'And upload on YouTUbe',
         status: false
       }
-    },
-    timer: {
-      type: Boolean,
-      default: false
     }
   },
   setup(props, { emit }) {
-    const description1 = ref('')
+    const description = ref('')
     const emitOnDone = () => {
       emit('onDone')
     }
@@ -58,14 +58,19 @@ export default {
     }
 
     const onAddDescription = () => {
-      emit('onAddDescription', {description: description1.value});
+      emit('onAddDescription', {description: description.value});
+      description.value = '';
+    }
+    const deleteDescription = (id, arr) => {
+      delete arr[id];
     }
 
     return {
-      description1,
+      description,
       emitOnDone,
       emitOnRemove,
-      onAddDescription
+      onAddDescription,
+      deleteDescription
     }
   },
   methods: {
@@ -85,15 +90,23 @@ button, input, .my-style {
 span {
   margin: 20px;
 }
+li{
+  width: 200px;
+}
 .task-card {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
-.description {
+.description-list{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
 }
 .delete-item{
   margin-left: 30px;
+}
+.show-more{
+  margin-top: 15px;
 }
 </style>
